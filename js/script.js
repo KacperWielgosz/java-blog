@@ -33,7 +33,8 @@ const titleClickHandler = function(event){
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list';
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleAuthorSelector = '.post-author';
 
 function generateTitleLinks(customSelector = ''){
 
@@ -118,11 +119,11 @@ function tagClickHandler(event){
   /* END LOOP: for each active tag link */
   }
   /* find all tag links with "href" attribute equal to the "href" constant */
-  const foundTags = document.querySelectorAll(href)
+  const foundTags = document.querySelectorAll(href);
   /* START LOOP: for each found tag link */
   for (let tag of foundTags){
     /* add class active */
-  foundTags.classList.add('active')
+    foundTags.classList.add('active');
   /* END LOOP: for each found tag link */
   }
 
@@ -132,13 +133,43 @@ function tagClickHandler(event){
 
 function addClickListenersToTags(){
   /* find all links to tags */
-  const tagLinks = document.querySelectorAll();
+  const tagLinks = document.querySelector(optArticleTagsSelector).querySelectorAll('a');
   /* START LOOP: for each link */
   for(let tag of tagLinks){
     /* add tagClickHandler as event listener for that link */
-    tag.addEventListener(tagClickHandler);
+    tag.addEventListener(tagLinks, tagClickHandler);
   /* END LOOP: for each link */
   }
 }
 
 addClickListenersToTags();
+
+function generateAuthors(){
+  const articles = document.querySelectorAll(optArticleSelector);
+
+  /* START LOOP: for every article: */
+  for(let article of articles){
+
+    /* find author wrapper */
+    const authorWrapper = article.querySelector(optArticleAuthorSelector);
+
+    /* make html variable with empty string */
+    authorWrapper.innerHTML = '';
+
+    /* get author from <p> from authorWrapper */
+    const articleAuthors = article.querySelectorAll('p').textContent;
+    console.log('articleAuthors:', articleAuthors);
+  }
+}
+/*
+function generateAuthors(){
+  const articles = document.querySelectorAll(optArticleSelector);
+  for (let article of articles){
+    const authors = document.querySelectorAll(optArticleAuthorSelector);
+    authors.innerHTML = '';
+  }
+  const articleAuthors = authors.querySelector('p').textContent;
+  console.log('articleAuthors:', articleAuthors);
+  const authorHTML = '<p> "by ' + articleAuthors +'" </p>';
+  authors.innerHTML = authors.innerHTML + authorHTML;
+*/
