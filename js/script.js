@@ -150,7 +150,7 @@ function calculateTagClass(count, params){
   return classNumber
 }
 
-function generateTags(){
+/*function generateTags(){
   let allTags = {};
   const articles = document.querySelectorAll(optArticleSelector);
   for (let article of articles){
@@ -179,8 +179,42 @@ function generateTags(){
   }
   console.log(allTagsHTML)
   tagList.innerHTML = tagList.innerHTML + allTagsHTML;
-console.log(allTags);
+  console.log(allTags);
+}*/
+
+function generateTags () {
+  const allTags = {};
+  const articles = document.querySelectorAll(optArticleSelector);
+  for (let article of articles){
+    const tagWrapper = article.querySelector(optArticleTagsSelector);
+    tagWrapper.innerHTML = '';
+    const articleTags = article.getAttribute('data-tags');
+    console.log('articleTags:', articleTags)
+    const articleTagsArray = articleTags.split(' ');
+    console.log('articleTagsArray:', articleTagsArray)
+    articleTagsArray.forEach(item => {
+      const linkHTML = '<li><a href="#tag-' + articleTags + '"><span>' + item +'</span></a></li>';
+      tagWrapper.innerHTML = tagWrapper.innerHTML + linkHTML;
+      if(!allTags[item]){
+        allTags[item] = 1;
+      } else {
+        allTags[item]++;
+      }
+      console.log(allTags)
+    });
+  }
+  const tagList = document.querySelector(optTagsListSelector);
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams)
+  let allTagsHTML = '';
+  for(let tag in allTags){
+    allTagsHTML += '<li><a class="'+ optCloudClassPrefix +''+ calculateTagClass(allTags[tag], tagsParams) +'" href="#tag-' + tag + '">' + tag +'</a>' + ' (' + allTags[tag] + ') </li>';
+  }
+  console.log(allTagsHTML)
+  tagList.innerHTML = tagList.innerHTML + allTagsHTML;
+  console.log(allTags);
 }
+
 
 function generateAuthors () {
   let allAuthors = {};
